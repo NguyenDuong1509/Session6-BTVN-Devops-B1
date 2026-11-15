@@ -1,0 +1,34 @@
+package com.banking.controller;
+
+import com.banking.entity.Account;
+import com.banking.repository.AccountRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/accounts")
+public class AccountController {
+
+    private final AccountRepository accountRepository;
+
+    public AccountController(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
+
+    @GetMapping
+    public List<Account> getAllAccounts() {
+        return accountRepository.findAll();
+    }
+
+    @PostMapping
+    public ResponseEntity<Account> createAccount(@RequestBody Account account) {
+        return ResponseEntity.ok(accountRepository.save(account));
+    }
+
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("Banking App connected to database successfully!");
+    }
+}
